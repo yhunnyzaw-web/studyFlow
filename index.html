@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyFlow — Study Planner & Task Management System</title>
+  <meta name="description" content="A modern, portfolio-ready study planner and task manager for students. Fully customizable.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    
+    <!-- Backdrop for mobile sidebar -->
+    <div id="sidebarOverlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+    <!-- =========================================================================
+         1. SIDEBAR NAVIGATION
+         ========================================================================= -->
+    <aside id="sidebar" class="sidebar" aria-label="Main Navigation">
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="brand-icon" aria-hidden="true">
+            <!-- Book / Graduation Cap Icon -->
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              <line x1="9" y1="7" x2="15" y2="7"/>
+              <line x1="9" y1="11" x2="13" y2="11"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <h1>StudyFlow</h1>
+            <p>Study Planner</p>
+          </div>
+        </div>
+        <button id="sidebarCloseBtn" class="sidebar-close-btn" aria-label="Close navigation sidebar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="sidebar-content">
+        <!-- Navigation Section -->
+        <div>
+          <div class="nav-header-row">
+            <p class="nav-group-title">Views</p>
+          </div>
+          <nav class="sidebar-nav">
+            <button class="nav-link active" data-nav="all">
+              <span class="nav-link-main">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="7" height="7"/>
+                  <rect x="14" y="3" width="7" height="7"/>
+                  <rect x="14" y="14" width="7" height="7"/>
+                  <rect x="3" y="14" width="7" height="7"/>
+                </svg>
+                All Tasks
+              </span>
+              <span id="navBadgeAll" class="nav-badge">0</span>
+            </button>
+
+            <button class="nav-link" data-nav="pending">
+              <span class="nav-link-main">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+                Pending
+              </span>
+              <span id="navBadgePending" class="nav-badge">0</span>
+            </button>
+
+            <button class="nav-link" data-nav="completed">
+              <span class="nav-link-main">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+                Completed
+              </span>
+              <span id="navBadgeCompleted" class="nav-badge">0</span>
+            </button>
+
+            <button class="nav-link" data-nav="overdue">
+              <span class="nav-link-main">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                  <line x1="12" y1="9" x2="12" y2="13"/>
+                  <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                Overdue
+              </span>
+              <span id="navBadgeOverdue" class="nav-badge">0</span>
+            </button>
+
+            <!-- Customization & Settings Link -->
+            <button id="openSettingsNavBtn" class="nav-link" data-nav="settings" style="margin-top: 6px;">
+              <span class="nav-link-main">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+                Customize
+              </span>
+              <span class="nav-badge" style="background-color: var(--primary-light); color: var(--primary);">⚙️</span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- Quick Subject Filters with + Manage Button -->
+        <div>
+          <div class="nav-header-row">
+            <p class="nav-group-title">My Subjects</p>
+            <button id="openSubjectManagerBtn" class="btn-text-sm" title="Edit subject names and colors">
+              ⚙️ Manage
+            </button>
+          </div>
+          <div id="sidebarSubjects" class="sidebar-subjects">
+            <button class="subject-pill active" data-subject="All">All</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <strong id="sidebarProfileProgram">Diploma in Computer Science</strong>
+        <span id="sidebarProfileSemester">Semester 2 • StudyFlow v1.0</span>
+      </div>
+    </aside>
+
+    <!-- =========================================================================
+         2. MAIN CONTENT AREA
+         ========================================================================= -->
+    <div class="main-area">
+      <!-- Topbar Header -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button id="mobileMenuToggle" class="mobile-menu-toggle" aria-label="Open sidebar menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
+          <div class="topbar-greeting">
+            <h2 id="topbarGreeting">Welcome back, Student 👋</h2>
+            <p id="topbarSubtitle">Stay organized and on top of your study schedule.</p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="date-badge" id="currentDateBadge">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            <span id="currentDateText">Today</span>
+          </div>
+
+          <!-- Customize Button in Topbar -->
+          <button id="openSettingsTopBtn" class="btn btn-secondary btn-sm" title="Customize student name, subjects, and theme">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            Customize
+          </button>
+
+          <a href="#taskFormPanel" class="btn btn-primary btn-sm">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            New Task
+          </a>
+        </div>
+      </header>
+
+      <!-- Main Scrollable Content -->
+      <main class="content-container">
+
+        <!-- A. Dashboard Stats Grid -->
+        <section class="stats-grid" aria-label="Study Statistics Summary">
+          <article class="stat-card">
+            <div class="stat-info">
+              <span>Total Tasks</span>
+              <strong id="statTotal">0</strong>
+            </div>
+            <div class="stat-icon total" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <polyline points="10 9 9 9 8 9"/>
+              </svg>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-info">
+              <span>Pending</span>
+              <strong id="statPending">0</strong>
+            </div>
+            <div class="stat-icon pending" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-info">
+              <span>Completed</span>
+              <strong id="statCompleted">0</strong>
+            </div>
+            <div class="stat-icon completed" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-info">
+              <span>Overdue</span>
+              <strong id="statOverdue">0</strong>
+            </div>
+            <div class="stat-icon overdue" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+            </div>
+          </article>
+        </section>
+
+        <!-- B. Progress Indicator -->
+        <section class="progress-card" aria-label="Study Progress Tracker">
+          <div class="progress-header">
+            <h3>Overall Completion Progress</h3>
+            <span id="progressPercentBadge" class="progress-percentage">0% Completed</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div id="progressBarFill" class="progress-fill"></div>
+          </div>
+          <p id="progressMotivation" class="progress-subtext">Add your tasks below to start tracking your progress!</p>
+        </section>
+
+        <!-- C. Add / Edit Task Form Panel -->
+        <section id="taskFormPanel" class="panel">
+          <div class="panel-header">
+            <div>
+              <h3 id="formTitle" class="panel-title">Add New Study Task</h3>
+              <p class="panel-desc">Record assignments, homework, exams, or study goals.</p>
+            </div>
+          </div>
+
+          <form id="taskForm" novalidate>
+            <div class="task-form-grid">
+              <!-- Task Title -->
+              <div class="form-group full-width">
+                <label for="taskTitle" class="form-label">Task Title <span class="req">*</span></label>
+                <input
+                  type="text"
+                  id="taskTitle"
+                  class="form-input"
+                  placeholder="e.g. Finish Data Structures Lab 3"
+                  maxlength="100"
+                  required
+                >
+                <span id="titleError" class="form-error">Task title is required.</span>
+              </div>
+
+              <!-- Subject with Customizer Shortcut -->
+              <div class="form-group">
+                <div class="form-label-row">
+                  <label for="taskSubject" class="form-label">Subject <span class="req">*</span></label>
+                  <button type="button" id="formManageSubjectsBtn" class="btn-text-sm" title="Edit subject names and colors">
+                    ⚙️ Manage Subjects
+                  </button>
+                </div>
+                <select id="taskSubject" class="form-select" required>
+                  <option value="" disabled selected>Select a subject...</option>
+                </select>
+                <span id="subjectError" class="form-error">Please select or add a subject.</span>
+              </div>
+
+              <!-- Due Date -->
+              <div class="form-group">
+                <label for="taskDueDate" class="form-label">Due Date <span class="req">*</span></label>
+                <input
+                  type="date"
+                  id="taskDueDate"
+                  class="form-input"
+                  required
+                >
+                <span id="dueDateError" class="form-error">Please select a valid due date.</span>
+              </div>
+
+              <!-- Priority -->
+              <div class="form-group">
+                <label for="taskPriority" class="form-label">Priority</label>
+                <select id="taskPriority" class="form-select">
+                  <option value="Low">Low</option>
+                  <option value="Medium" selected>Medium</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+
+              <!-- Status (when editing) -->
+              <div class="form-group">
+                <label for="taskStatus" class="form-label">Status</label>
+                <select id="taskStatus" class="form-select">
+                  <option value="Pending" selected>Pending</option>
+                  <option value="Completed">Completed</option>
+                </select>
+              </div>
+
+              <!-- Description -->
+              <div class="form-group full-width">
+                <label for="taskDescription" class="form-label">Description (Optional)</label>
+                <textarea
+                  id="taskDescription"
+                  class="form-textarea"
+                  placeholder="Add details, notes, reference pages, or submission instructions..."
+                  maxlength="300"
+                ></textarea>
+              </div>
+
+              <!-- Form Buttons -->
+              <div class="form-actions">
+                <button type="submit" id="submitTaskBtn" class="btn btn-primary">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                  </svg>
+                  <span id="submitBtnText">Add Task</span>
+                </button>
+                <button type="button" id="cancelEditBtn" class="btn btn-secondary" style="display: none;">
+                  Cancel Edit
+                </button>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <!-- D. Task Management Section (Search, Filters, and List) -->
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <h3 class="panel-title">Task List</h3>
+              <p class="panel-desc">Manage, filter, and track all your academic tasks.</p>
+            </div>
+          </div>
+
+          <!-- Toolbar: Search + Filter + Sort -->
+          <div class="toolbar">
+            <!-- Search -->
+            <div class="search-box">
+              <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              <input
+                type="search"
+                id="searchInput"
+                class="search-input"
+                placeholder="Search tasks by title, subject, notes..."
+                aria-label="Search tasks"
+              >
+            </div>
+
+            <!-- Filter: Status -->
+            <select id="statusFilter" class="filter-select" aria-label="Filter by Status">
+              <option value="All">All Statuses</option>
+              <option value="Pending">Pending</option>
+              <option value="Completed">Completed</option>
+              <option value="Overdue">Overdue</option>
+            </select>
+
+            <!-- Filter: Priority -->
+            <select id="priorityFilter" class="filter-select" aria-label="Filter by Priority">
+              <option value="All">All Priorities</option>
+              <option value="High">High Priority</option>
+              <option value="Medium">Medium Priority</option>
+              <option value="Low">Low Priority</option>
+            </select>
+
+            <!-- Filter: Subject -->
+            <select id="subjectFilter" class="filter-select" aria-label="Filter by Subject">
+              <option value="All">All Subjects</option>
+            </select>
+
+            <!-- Sort By -->
+            <select id="sortBy" class="filter-select" aria-label="Sort tasks">
+              <option value="dueDate">Sort: Due Date</option>
+              <option value="priority">Sort: Priority (High to Low)</option>
+              <option value="newest">Sort: Newest First</option>
+            </select>
+          </div>
+
+          <!-- Loading State Indicator -->
+          <div id="loadingState" class="loading-state">
+            <div class="spinner"></div>
+            <p>Loading your study tasks...</p>
+          </div>
+
+          <!-- Task Items List Container -->
+          <div id="taskList" class="task-list"></div>
+
+          <!-- Empty State Container -->
+          <div id="emptyState" class="empty-state">
+            <div class="empty-icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+            </div>
+            <h4 id="emptyTitle">No Tasks Found</h4>
+            <p id="emptyDescription">You're all caught up! Use the form above to add a new task.</p>
+            <a href="#taskFormPanel" class="btn btn-primary btn-sm">Add a Task Now</a>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Footer -->
+      <footer class="app-footer">
+        <p>StudyFlow &copy; 2026 &mdash; Built with HTML5, CSS3, &amp; Vanilla JavaScript. Designed for Students &amp; Internships.</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       3. MODALS (VIEW TASK, DELETE CONFIRMATION & CUSTOMIZATION / SETTINGS)
+       ========================================================================= -->
+
+  <!-- Modal A: View Task Details -->
+  <div id="viewModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="viewModalTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="viewModalTitle">Task Details</h3>
+        <button id="closeViewModalBtn" class="btn-icon" aria-label="Close modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-field">
+          <label>Task Title</label>
+          <p id="viewTaskTitle" style="font-weight: 700; font-size: 16px;"></p>
+        </div>
+        <div class="modal-field">
+          <label>Subject</label>
+          <p id="viewTaskSubject"></p>
+        </div>
+        <div class="modal-field">
+          <label>Due Date &amp; Status</label>
+          <div id="viewTaskBadges" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px;"></div>
+        </div>
+        <div class="modal-field">
+          <label>Description &amp; Notes</label>
+          <p id="viewTaskDescription" style="white-space: pre-wrap; color: var(--text-muted);"></p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="viewEditBtn" class="btn btn-primary btn-sm">Edit Task</button>
+        <button id="closeViewModalFooterBtn" class="btn btn-secondary btn-sm">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal B: Delete Confirmation Modal -->
+  <div id="deleteModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+    <div class="modal-card" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3 id="deleteModalTitle" style="color: var(--danger);">Confirm Task Deletion</h3>
+        <button id="closeDeleteModalBtn" class="btn-icon" aria-label="Cancel deletion">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete <strong id="deleteTaskTitle"></strong>?</p>
+        <p style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">
+          This action cannot be undone and will permanently remove this study task.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button id="cancelDeleteBtn" class="btn btn-secondary btn-sm">Cancel</button>
+        <button id="confirmDeleteBtn" class="btn btn-danger btn-sm">Yes, Delete Task</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal C: Customization & Settings Modal (Subjects, Profile, Theme) -->
+  <div id="settingsModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
+    <div class="modal-card" style="max-width: 580px;">
+      <div class="modal-header">
+        <h3 id="settingsModalTitle">⚙️ Customization &amp; Settings</h3>
+        <button id="closeSettingsModalBtn" class="btn-icon" aria-label="Close settings">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Settings Navigation Tabs -->
+      <div class="settings-tabs" role="tablist">
+        <button class="tab-btn active" id="tabBtnSubjects" role="tab" aria-selected="true" data-tab="subjects">
+          📚 Subjects
+        </button>
+        <button class="tab-btn" id="tabBtnProfile" role="tab" aria-selected="false" data-tab="profile">
+          👤 Student Profile
+        </button>
+        <button class="tab-btn" id="tabBtnTheme" role="tab" aria-selected="false" data-tab="theme">
+          🎨 Theme &amp; Style
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <!-- TAB 1: SUBJECTS MANAGER -->
+        <div id="tabPanelSubjects" class="tab-panel active" role="tabpanel">
+          <div>
+            <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main);">Manage Academic Subjects</h4>
+            <p style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">
+              Add new subjects or click ✏️ to rename an existing subject. Renaming a subject automatically updates all its tasks!
+            </p>
+          </div>
+
+          <!-- Subject List -->
+          <div id="subjectManagerList" class="subject-manager-list"></div>
+
+          <!-- Add Subject Box -->
+          <div class="add-subject-card">
+            <h5>+ Add New Subject</h5>
+            <div class="add-subject-inputs">
+              <input
+                type="text"
+                id="newSubjectName"
+                class="form-input"
+                placeholder="e.g. Artificial Intelligence, Physics"
+                maxlength="50"
+              >
+              <button type="button" id="addNewSubjectBtn" class="btn btn-primary btn-sm" style="white-space: nowrap;">
+                + Add Subject
+              </button>
+            </div>
+            <div>
+              <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 6px;">
+                Choose Subject Color:
+              </span>
+              <div id="newSubjectColorSwatches" class="color-swatches">
+                <button type="button" class="color-swatch-btn color-dot-blue selected" data-color="blue" title="Blue"></button>
+                <button type="button" class="color-swatch-btn color-dot-purple" data-color="purple" title="Purple"></button>
+                <button type="button" class="color-swatch-btn color-dot-emerald" data-color="emerald" title="Emerald"></button>
+                <button type="button" class="color-swatch-btn color-dot-amber" data-color="amber" title="Amber"></button>
+                <button type="button" class="color-swatch-btn color-dot-rose" data-color="rose" title="Rose"></button>
+                <button type="button" class="color-swatch-btn color-dot-cyan" data-color="cyan" title="Cyan"></button>
+                <button type="button" class="color-swatch-btn color-dot-orange" data-color="orange" title="Orange"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: STUDENT PROFILE -->
+        <div id="tabPanelProfile" class="tab-panel" role="tabpanel">
+          <div>
+            <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main);">Personalize Your Workspace</h4>
+            <p style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">
+              Customize your student greeting, course, semester, and personal study motto.
+            </p>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div class="form-group">
+              <label for="profileNameInput" class="form-label">Your Name</label>
+              <input
+                type="text"
+                id="profileNameInput"
+                class="form-input"
+                placeholder="e.g. Alex, Yoon"
+                maxlength="40"
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="profileProgramInput" class="form-label">Course / Degree Program</label>
+              <input
+                type="text"
+                id="profileProgramInput"
+                class="form-input"
+                placeholder="e.g. Diploma in Computer Science"
+                maxlength="60"
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="profileSemesterInput" class="form-label">Semester / Term</label>
+              <input
+                type="text"
+                id="profileSemesterInput"
+                class="form-input"
+                placeholder="e.g. Year 1, Semester 2"
+                maxlength="40"
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="profileGoalInput" class="form-label">Personal Study Goal / Motto</label>
+              <textarea
+                id="profileGoalInput"
+                class="form-textarea"
+                placeholder="e.g. Focus on one task at a time. Consistency beats intensity!"
+                maxlength="140"
+              ></textarea>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; margin-top: 4px;">
+              <button type="button" id="saveProfileBtn" class="btn btn-primary btn-sm">
+                Save Profile Changes
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: THEME & STYLE -->
+        <div id="tabPanelTheme" class="tab-panel" role="tabpanel">
+          <div>
+            <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main);">Accent Color Theme</h4>
+            <p style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">
+              Select an accent color theme for buttons, icons, and highlights.
+            </p>
+          </div>
+
+          <div class="theme-options-grid" id="themePickerGrid">
+            <button type="button" class="theme-card-btn active" data-theme="blue">
+              <span class="theme-circle color-dot-blue"></span>
+              Classic Blue
+            </button>
+            <button type="button" class="theme-card-btn" data-theme="purple">
+              <span class="theme-circle color-dot-purple"></span>
+              Royal Purple
+            </button>
+            <button type="button" class="theme-card-btn" data-theme="emerald">
+              <span class="theme-circle color-dot-emerald"></span>
+              Emerald Green
+            </button>
+            <button type="button" class="theme-card-btn" data-theme="cyan">
+              <span class="theme-circle color-dot-cyan"></span>
+              Ocean Cyan
+            </button>
+            <button type="button" class="theme-card-btn" data-theme="rose">
+              <span class="theme-circle color-dot-rose"></span>
+              Crimson Rose
+            </button>
+          </div>
+
+          <div style="margin-top: 10px;">
+            <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin-bottom: 4px;">Card Display Density</h4>
+            <div style="display: flex; gap: 10px; margin-top: 8px;">
+              <button type="button" id="densityComfortableBtn" class="btn btn-secondary btn-sm" style="flex: 1;">
+                Comfortable (Standard)
+              </button>
+              <button type="button" id="densityCompactBtn" class="btn btn-secondary btn-sm" style="flex: 1;">
+                Compact (More tasks on screen)
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="closeSettingsModalFooterBtn" class="btn btn-secondary btn-sm">Close Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       4. TOAST NOTIFICATION CONTAINER (Success & Error Feedback)
+       ========================================================================= -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- Application Logic -->
+  <script src="script.js"></script>
+</body>
+</html>
